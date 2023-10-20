@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "418365234825",
+    "project_id": "composenotify-88e1d",
+    "storage_bucket": "composenotify-88e1d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418365234825:android:793b8d25cf8b7fe6583058",
+        "android_client_info": {
+          "package_name": "com.hfad.composenotify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl8VO300tigKc4Gr0IkezOXgnPUR3_om0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
