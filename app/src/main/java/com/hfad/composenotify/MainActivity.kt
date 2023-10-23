@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,42 +35,39 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.hfad.composenotify.ui.theme.ComposeNotifyTheme
 
+const val ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 123
 class MainActivity : ComponentActivity() {
-    private lateinit var pushBroadcast: BroadcastReceiver
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                    or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                    or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        )
+
         super.onCreate(savedInstanceState)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (!Settings.canDrawOverlays(this)) {
-                val intent = Intent(
-                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + BuildConfig.APPLICATION_ID)
-                )
-                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE)
-            }
-        }
 
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (!Settings.canDrawOverlays(this)) {
+                    val intent = Intent(
+                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + BuildConfig.APPLICATION_ID)
+                    )
+                    startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE)
 
-        pushBroadcast = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                if (intent?.action == MyFirebaseMessagingService.INTENT_FILTER) {
-                    val intents = Intent(this@MainActivity, MainActivity::class.java)
-                    intents.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    intents.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                    startActivity(intents)
-                    // Handle the intent action here
-                    // For example, you can show a notification or perform some other action
                 }
-            }
-        }
 
-        // Register the BroadcastReceiver with the intent filter
-        val intentFilter = IntentFilter()
-        intentFilter.addAction(MyFirebaseMessagingService.INTENT_FILTER)
-        registerReceiver(pushBroadcast, intentFilter)
+
+            }
+
+
+
+
+
 
 
 
@@ -83,9 +81,9 @@ class MainActivity : ComponentActivity() {
         }
 
     }
-    companion object {
-        const val ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 123 // Use any unique integer code
-    }
+
+
+
 }
 
 
